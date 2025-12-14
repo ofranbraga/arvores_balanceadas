@@ -103,11 +103,28 @@ class arvore_avl:
             node.filho_dir = self.rotacao_dir(node.filho_dir)
             return self.rotacao_esq(node)
 
-        print(node.no, node.filho_dir, node.filho_esq)
         return node
 
-    def toString(self, no_atual = None, nivel = 0):
-        "Função para printar a árvore no terminal."
+    # def deletar(self, chave : int):
+    #     "Função principal para deletar um nó em uma árvore binária"
+
+    #     self.raiz = self.deletar_Node(self.raiz, chave)
+
+    # def deletar_Node(self, node : Node, chave : int):
+    #     """Função auxiliar para deletar um nó, seguindo a definição.
+    #     Caso o nó seja uma folha: verifica apenas o balanceamento da árvore;
+    #     Caso o nó tenha apenas um filho: o filho assume o lugar do pai e verifica o balanceamento da árvore;
+    #     Caso o nó tenha dois filhos: o sucessor, ou o nó mais a esquerda da sub-árvore à direita, assume o lugar do pai e
+    #     verifica o balanceamento."""
+
+    #     if node is None:
+    #         return
+        
+    def to_String(self, no_atual = None, nivel = 0):
+        """Função para printar a árvore no terminal.
+        A primeira linha será a raíz. Normalmente, a primeira linha após a raíz será a sub-árvore a esquerda
+        e a segunda, a sub-árvore à direita"""
+        
         if nivel == 0 and no_atual is None:
             no_atual = self.raiz
         
@@ -126,4 +143,4 @@ avl.inserir(10)
 avl.inserir(20)
 avl.inserir(12)
 
-avl.toString()
+avl.to_String()
