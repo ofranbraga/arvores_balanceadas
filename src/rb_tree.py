@@ -309,9 +309,12 @@ class ArvoreRubroNegra:
             elif opcao == "4":
                 arvore.mostrar_arvore()
 
+            elif opcao == "5":
+                print("Saindo...")
+                break
+            
             else:
                 print("Opção inválida. Tente novamente.")
-                break
 
 if __name__ == "__main__":
     ArvoreRubroNegra.menu()
