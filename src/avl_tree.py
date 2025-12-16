@@ -105,20 +105,72 @@ class arvore_avl:
 
         return node
 
-    # def deletar(self, chave : int):
-    #     "Função principal para deletar um nó em uma árvore binária"
+    def min_Node(self, node):
+        """Função para encontrar o menor valor de uma árvore binária.
+        Será utilizada para encontrar o sucessor de um nó para realizar a remoção de um nó com dois filhos"""
+        
+        no_atual = node
 
-    #     self.raiz = self.deletar_Node(self.raiz, chave)
+        while not no_atual:
+            no_atual = no_atual.filho_esq
+        return no_atual
 
-    # def deletar_Node(self, node : Node, chave : int):
-    #     """Função auxiliar para deletar um nó, seguindo a definição.
-    #     Caso o nó seja uma folha: verifica apenas o balanceamento da árvore;
-    #     Caso o nó tenha apenas um filho: o filho assume o lugar do pai e verifica o balanceamento da árvore;
-    #     Caso o nó tenha dois filhos: o sucessor, ou o nó mais a esquerda da sub-árvore à direita, assume o lugar do pai e
-    #     verifica o balanceamento."""
+    def deletar(self, chave : int):
+        "Função principal para deletar um nó em uma árvore binária"
 
-    #     if node is None:
-    #         return
+        self.raiz = self.deletar_Node(self.raiz, chave)
+
+    def deletar_Node(self, node : Node, chave : int):
+        """Função auxiliar para deletar um nó, seguindo a definição. Verifica-se em qual posição o nó está.
+        Caso o nó seja uma folha: verifica apenas o balanceamento da árvore;
+        Caso o nó tenha apenas um filho: o filho assume o lugar do pai e verifica o balanceamento da árvore;
+        Caso o nó tenha dois filhos: o sucessor, ou o nó mais a esquerda da sub-árvore à direita, assume o lugar do pai e
+        verifica o balanceamento."""
+
+        if node is None:
+            return
+
+        if chave < node.no:
+            node.filho_esq = self.deletar_Node(node.filho_esq, chave)
+        elif chave > node.no:
+            node.filho_dir = self.deletar_Node(node.filho_dir, chave)
+        
+        else:
+            if not node.filho_esq:
+                temp = node.filho_dir
+                node = None
+                return temp
+            elif not node.filho_dir:
+                temp = node.filho_esq
+                node = None
+                return temp
+        
+            temp = self.min_Node(node.filho_dir)
+            node.no = temp.no
+            node.filho_dir = self.deletar_Node(node.filho_dir, temp.no)
+        
+        node.altura = 1 + max(self.altura_node(node.filho_esq), self.altura_node(node.filho_dir))
+        balanceamento = self.fator_balanceamento(node)
+
+        # Rotação à direita
+        if balanceamento > 1 and self.fator_balanceamento(node.filho_esq) >= 0:
+            return self.rotacao_dir(node)
+        
+        # Rotação duplamente à direita
+        if balanceamento > 1 and self.fator_balanceamento(node.filho_esq) < 0:
+            node.filho_esq = self.rotacao_esq(node.filho_esq)
+            return self.rotacao_dir(node)
+
+        # Rotação à esquerda
+        if balanceamento < -1 and self.fator_balanceamento(node.filho_dir) < 0:
+            return self.rotacao_esq(node)
+        
+        # Rotação duplamente à direita
+        if balanceamento < -1 and self.fator_balanceamento(node.filho_dir) >= 0:
+            node.filho_dir = self.rotacao_dir(node.filho_dir)
+            return self.rotacao_esq(node)
+
+        return node
         
     def to_String(self, no_atual = None, nivel = 0):
         """Função para printar a árvore no terminal.
@@ -134,13 +186,18 @@ class arvore_avl:
         prefixo = " " * (nivel - 1) * 4 + "├─ " if nivel > 0 else ""
         print(f"{prefixo}{no_atual.no}")
                 
-        self.toString(no_atual.filho_esq, nivel + 1)
-        self.toString(no_atual.filho_dir, nivel + 1)
+        self.to_String(no_atual.filho_esq, nivel + 1)
+        self.to_String(no_atual.filho_dir, nivel + 1)
 
 avl = arvore_avl()
 
 avl.inserir(10)
 avl.inserir(20)
 avl.inserir(12)
+avl.inserir(15)
+avl.inserir(21)
+avl.inserir(23)
+avl.to_String()
 
+avl.deletar(20)
 avl.to_String()
