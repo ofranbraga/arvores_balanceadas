@@ -9,14 +9,14 @@ class arvore_avl:
     def __init__(self):
         self.raiz : Node | None = None
 
-    def altura_node(self, no):
+    def altura_node(self, no : Node):
         "Função para retornar a altura de cada sub-árvore"
 
         if no is None:
             return 0
         return no.altura
     
-    def fator_balanceamento(self, no):
+    def fator_balanceamento(self, no : Node):
         """Função para verificar o balanceamento da árvore
         Caso o FB (Fator de Balanceamento) seja maior que 1 ou menor que -1, uma rotação deverá ser aplicada"""
 
@@ -105,7 +105,7 @@ class arvore_avl:
 
         return node
 
-    def min_Node(self, node):
+    def min_Node(self, node : Node):
         """Função para encontrar o menor valor de uma árvore binária.
         Será utilizada para encontrar o sucessor de um nó para realizar a remoção de um nó com dois filhos"""
         
@@ -172,12 +172,12 @@ class arvore_avl:
 
         return node
     
-    def procurar_elemento(self, chave):
+    def procurar_elemento(self, chave : int):
         "Função principal para procurar um elemento em uma árvore binária"
         
         return self.procurar_elemento_Node(self.raiz, chave)
 
-    def procurar_elemento_Node(self, node, chave):
+    def procurar_elemento_Node(self, node : Node, chave : int):
         """Função auxiliar recursiva de busca.
         Caso um elemento esteja na árvore, retornará True;
         Caso não, retornará False. 
@@ -192,13 +192,18 @@ class arvore_avl:
         else:
             return self.procurar_elemento_Node(node.filho_dir, chave)
 
-    def to_String(self, no_atual = None, nivel = 0):
-        """Função para printar a árvore no terminal.
+    def to_String(self, nivel : int = 0):
+        "Função principal para printar a árvore binária"
+
+        self.to_String_Node(self.raiz, nivel)
+    
+    def to_String_Node(self, no_atual : Node, nivel : int):
+        """Função auxiliar para printar a árvore no terminal.
         A primeira linha será a raíz. Normalmente, a primeira linha após a raíz será a sub-árvore a esquerda
         e a segunda, a sub-árvore à direita"""
         
-        if nivel == 0 and no_atual is None:
-            no_atual = self.raiz
+        # if nivel == 0 and no_atual is None:
+        #     no_atual = self.raiz
         
         if no_atual is None:
             return
@@ -206,8 +211,8 @@ class arvore_avl:
         prefixo = " " * (nivel - 1) * 4 + "├─ " if nivel > 0 else ""
         print(f"{prefixo}{no_atual.no}")
                 
-        self.to_String(no_atual.filho_esq, nivel + 1)
-        self.to_String(no_atual.filho_dir, nivel + 1)
+        self.to_String_Node(no_atual.filho_esq, nivel + 1)
+        self.to_String_Node(no_atual.filho_dir, nivel + 1)
 
 avl = arvore_avl()
 
