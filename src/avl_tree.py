@@ -171,7 +171,27 @@ class arvore_avl:
             return self.rotacao_esq(node)
 
         return node
+    
+    def procurar_elemento(self, chave):
+        "Função principal para procurar um elemento em uma árvore binária"
         
+        return self.procurar_elemento_Node(self.raiz, chave)
+
+    def procurar_elemento_Node(self, node, chave):
+        """Função auxiliar recursiva de busca.
+        Caso um elemento esteja na árvore, retornará True;
+        Caso não, retornará False. 
+        """
+
+        if node is None:
+            return False
+        elif node.no == chave:
+            return True
+        elif chave < node.no:
+            return self.procurar_elemento_Node(node.filho_esq, chave)
+        else:
+            return self.procurar_elemento_Node(node.filho_dir, chave)
+
     def to_String(self, no_atual = None, nivel = 0):
         """Função para printar a árvore no terminal.
         A primeira linha será a raíz. Normalmente, a primeira linha após a raíz será a sub-árvore a esquerda
@@ -197,7 +217,9 @@ avl.inserir(12)
 avl.inserir(15)
 avl.inserir(21)
 avl.inserir(23)
+print(avl.procurar_elemento(20))
 avl.to_String()
 
 avl.deletar(20)
+print(avl.procurar_elemento(20))
 avl.to_String()
