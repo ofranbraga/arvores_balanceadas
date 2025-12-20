@@ -110,53 +110,67 @@ class ArvoreRubroNegra:
         self.fix_insert(node)
 
     def fix_insert(self, k):
-        while k.parent.color == VERMELHO:
-            print(f"\nConflito: Nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
-
+        while k.parent is not None and k.parent.color == VERMELHO:
+            
+            #direita: o pai de k é o filho a direita do avô
             if k.parent == k.parent.parent.right:
-                u = k.parent.parent.left #tio
+                u = k.parent.parent.left # Tio (irmão do pai)
+                
+                #caso 1: tio sendo vermelho -> so mudar a cor
                 if u.color == VERMELHO:
-                    print(f"   -> Caso 1: Tio {u.valor} é VERMELHO. Deve mudar a cor.")
+                    print(f"\nconflito: nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
+                    print(f"   -> Caso 1: tio {u.valor} é VERMELHO. recolorir e subir.")
                     u.color = PRETO
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
-                    k = k.parent.parent
+                    k = k.parent.parent #o conflito sobe para o avô
+                    #o loop continua automaticamente para verificar o avô
                 else:
+                    #caso 2: tio é PRETO e k é filho a esquerda
                     if k == k.parent.left:
-                        print(f"   -> Caso 2: Tio PRETO e Tio PRETO e 'joelho' (triângulo). Rotação Direita no pai.")
+                        print(f"   -> Caso 2: Tio PRETO e 'joelho' (triângulo). rotação direita no pai.")
                         k = k.parent
                         self.right_rotate(k)
-                        self.mostrar_arvore("árvore após rotação direita (intermediaria)")
+                        self.mostrar_arvore("arvore após rotação direita (intermediária)")
 
+                    #caso 3: tio é PRETO e k é filho a DIREITA 
                     print(f"   -> Caso 3: Tio PRETO e linha reta. recolorir e rotação esquerda no avô.")
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
                     self.left_rotate(k.parent.parent)
-                    self.mostrar_arvore("árvore após rotação esquerda (final)")
+                    self.mostrar_arvore("arvore apos rotação esquerda (final)")
+            
+            #esquerda: o pai de k é o filho a ESQUERDA do avô
             else:
-                u = k.parent.parent.right #tio
+                u = k.parent.parent.right # Tio
+
+                #caso 1:tio é VERMELHO
                 if u.color == VERMELHO:
-                    print(f"   -> Caso 1: tio {u.valor} é VERMELHO. deve mudar a cor.")
+                    print(f"\nConflito: Nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
+                    print(f"   -> Caso 1: Tio {u.valor} é VERMELHO. Recolorir e subir.")
                     u.color = PRETO
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
-                    k = k.parent.parent
-                    self.mostrar_arvore("árvore apos mudar cor")
+                    k = k.parent.parent # O conflito sobe
                 else:
+                    #caso 2: tio PRETO e k é filho a DIREITA 
                     if k == k.parent.right:
-                        print(f"   -> Caso 2: tio PRETO e 'joelho' (triângulo). rotação esquerda no pai.")
+                        print(f"   -> Caso 2: Tio PRETO e 'joelho' (triângulo). Rotação Esquerda no pai.")
                         k = k.parent
                         self.left_rotate(k)
-                        self.mostrar_arvore("árvore após rotação esquerda (intermediaria)")
+                        self.mostrar_arvore("Árvore após rotação esquerda (intermediária)")
 
-                    print(f"   -> Caso 3: Tio PRETO e Linha Reta. Solução: Recolorir e Rotação Direita no avô.")
+                    #caso 3: tio é PRETO e k é filho a ESQUERDA
+                    print(f"   -> Caso 3: Tio PRETO e Linha Reta. Recolorir e Rotação Direita no avô.")
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
                     self.right_rotate(k.parent.parent)
-                    self.mostrar_arvore("árvore após rotação direita (final)")
-
+                    self.mostrar_arvore("Árvore após rotação direita (final)")
+            
             if k == self.root:
                 break
+
+        #garante sempre que a Raiz seja PRETA ao final
         self.root.color = PRETO
 
     #remoção
