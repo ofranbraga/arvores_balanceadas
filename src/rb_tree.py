@@ -147,7 +147,7 @@ class ArvoreRubroNegra:
                 #caso 1:tio é VERMELHO
                 if u.color == VERMELHO:
                     print(f"\nConflito: Nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
-                    print(f"   -> Caso 1: Tio {u.valor} é VERMELHO. Recolorir e subir.")
+                    print(f"   -> Caso 1: Tio {u.valor} é VERMELHO. mudar a cor e subir.")
                     u.color = PRETO
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
