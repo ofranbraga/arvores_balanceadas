@@ -315,5 +315,6 @@ class ArvoreRubroNegra:
             elif opcao == "6":
                 break
 
+
 if __name__ == "__main__":
     ArvoreRubroNegra.menu()
