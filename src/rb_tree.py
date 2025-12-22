@@ -87,7 +87,10 @@ class ArvoreRubroNegra:
 
         while x != self.TNULL:
             y = x
-            if node.valor < x.valor:
+            if node.valor == x.valor:
+                print(f"valor {key} já existe na árvore. ignorando inserção.")
+                return
+            elif node.valor < x.valor:
                 x = x.left
             else:
                 x = x.right
