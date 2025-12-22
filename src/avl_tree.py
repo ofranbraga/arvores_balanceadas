@@ -1,3 +1,6 @@
+#FRANCISCO CLAUDIONOR DE BARROS BRAGA
+#KAMILA SOFIA DE OLIVEIRA SARMANHO
+
 class Node:
     def __init__(self, chave : int):
         self.no = chave
