@@ -198,6 +198,15 @@ class arvore_avl:
         for n in array:
             self.inserir(n)
             self.to_String()
+            print('')
+            
+    def remover_lista(self, array : list[int]):
+        """Função para remover uma lista de n elementos.
+        Apesar de aumentar a complexidade do algoritmo, serve para facilitar na demonstração do código"""
+        for n in array:
+            self.deletar(n)
+            self.to_String()
+            print('')
 
     def to_String(self, nivel : int = 0):
         "Função principal para printar a árvore binária"
@@ -237,3 +246,5 @@ avl = arvore_avl()
 # avl.to_String()
 
 avl.inserir_lista([1, 2, 3, 4, 5, 6])
+
+avl.remover_lista([2, 5])
