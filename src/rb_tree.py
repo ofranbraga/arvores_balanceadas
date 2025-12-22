@@ -34,7 +34,7 @@ class ArvoreRubroNegra:
             self.print_helper(currPtr.left, indent, False)
             self.print_helper(currPtr.right, indent, True)
         
-    def mostrar_arvore(self, titulo="Estado atual da Árvore"):
+    def mostrar_arvore(self, titulo="visualização RB"):
         print(f"\n--- {titulo} ---")
         if self.root == self.TNULL:
                 print("Árvore vazia")
@@ -114,66 +114,59 @@ class ArvoreRubroNegra:
             
             #direita: o pai de k é o filho a direita do avô
             if k.parent == k.parent.parent.right:
-                u = k.parent.parent.left # Tio (irmão do pai)
-                
-                #caso 1: tio sendo vermelho -> so mudar a cor
+                u = k.parent.parent.left 
                 if u.color == VERMELHO:
-                    print(f"\nconflito: nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
-                    print(f"   -> Caso 1: tio {u.valor} é VERMELHO. recolorir e subir.")
+                    print(f"\nconflito: nó {k.valor} e pai {k.parent.valor} são VERMELHOS")
+                    print(f"   -> Caso 1: tio {u.valor} é VERMELHO. mudar a cor e subir.")
                     u.color = PRETO
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
-                    k = k.parent.parent #o conflito sobe para o avô
-                    #o loop continua automaticamente para verificar o avô
+                    k = k.parent.parent 
                 else:
-                    #caso 2: tio é PRETO e k é filho a esquerda
                     if k == k.parent.left:
-                        print(f"   -> Caso 2: Tio PRETO e 'joelho' (triângulo). rotação direita no pai.")
+                        print(f"   -> Caso 2: tio PRETO e 'joelho'. rotação direita no pai.")
                         k = k.parent
                         self.right_rotate(k)
-                        self.mostrar_arvore("arvore após rotação direita (intermediária)")
-
-                    #caso 3: tio é PRETO e k é filho a DIREITA 
-                    print(f"   -> Caso 3: Tio PRETO e linha reta. recolorir e rotação esquerda no avô.")
+                    print(f"   -> Caso 3: Tio PRETO e linha reta. mudar a cor e rotação esquerda no avô.")
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
                     self.left_rotate(k.parent.parent)
-                    self.mostrar_arvore("arvore apos rotação esquerda (final)")
             
-            #esquerda: o pai de k é o filho a ESQUERDA do avô
+            #esquerda: o pai de k é o filho a esquerda do avô
             else:
-                u = k.parent.parent.right # Tio
-
-                #caso 1:tio é VERMELHO
+                u = k.parent.parent.right 
                 if u.color == VERMELHO:
-                    print(f"\nConflito: Nó {k.valor} e Pai {k.parent.valor} são VERMELHOS")
+                    print(f"\nConflito: Nó {k.valor} e pai {k.parent.valor} são VERMELHOS")
                     print(f"   -> Caso 1: Tio {u.valor} é VERMELHO. mudar a cor e subir.")
                     u.color = PRETO
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
-                    k = k.parent.parent # O conflito sobe
+                    k = k.parent.parent
                 else:
-                    #caso 2: tio PRETO e k é filho a DIREITA 
                     if k == k.parent.right:
-                        print(f"   -> Caso 2: Tio PRETO e 'joelho' (triângulo). Rotação Esquerda no pai.")
+                        print(f"   -> Caso 2: tio PRETO e 'joelho'. rotação esquerda no pai.")
                         k = k.parent
                         self.left_rotate(k)
-                        self.mostrar_arvore("Árvore após rotação esquerda (intermediária)")
-
-                    #caso 3: tio é PRETO e k é filho a ESQUERDA
-                    print(f"   -> Caso 3: Tio PRETO e Linha Reta. Recolorir e Rotação Direita no avô.")
+                    print(f"   -> Caso 3: Tio PRETO e linha reta. mudar a cor e rotação direita no avô.")
                     k.parent.color = PRETO
                     k.parent.parent.color = VERMELHO
                     self.right_rotate(k.parent.parent)
-                    self.mostrar_arvore("Árvore após rotação direita (final)")
             
             if k == self.root:
                 break
-
-        #garante sempre que a Raiz seja PRETA ao final
         self.root.color = PRETO
 
-    #remoção
+    def inserir_lista(self, lista_valores):
+        """insere uma lista de inteiros na árvore sequencialmente"""
+        print(f"\n{'='*40}")
+        print(f"RB: Inserindo Lista -> {lista_valores}")
+        print(f"{'='*40}")
+        
+        for val in lista_valores:
+            print(f"\n>>> Inserindo: {val}")
+            self.inserir(val)
+            self.mostrar_arvore(f"arvore após inserir {val}")
+
     def rb_transplant(self, u, v):
         if u.parent is None:
             self.root = v
@@ -282,53 +275,45 @@ class ArvoreRubroNegra:
     
     def menu():
         arvore = ArvoreRubroNegra()
-
         while True:
             print("\n" + "="*40)
             print("   GERENCIADOR DE ÁRVORE RUBRO-NEGRA")
             print("="*40)
-            print("1. Inserir elemento (Ver rotações)")
+            print("1. Inserir elemento")
             print("2. Remover elemento")
             print("3. Pesquisar elemento")
             print("4. Mostrar árvore completa")
-            print("5. Sair")
-
-            opcao = input("Escolha uma opção: ")
+            print("5. Inserir lista de elementos")
+            print("6. Sair")
+            opcao = input("escolha uma opção: ")
 
             if opcao == "1":
                 try:
-                    val = int(input("Digite o número inteiro para inserir: "))
-                    print(f"\n>>> Tentando inserir {val}...")
+                    val = int(input("digite o número: "))
                     arvore.inserir(val)
-                    arvore.mostrar_arvore("Árvore Final após Inserção")
-                except ValueError:
-                    print("Digite um numero valido")
-
+                    arvore.mostrar_arvore()
+                except ValueError: print("erro.")
             elif opcao == "2":
                 try:
-                    val = int(input("Digite o número inteiro para remover: "))
+                    val = int(input("digite o número: "))
                     arvore.remover(val)
                     arvore.mostrar_arvore()
-                except ValueError:
-                    print("Numero invalido")
-
+                except ValueError: print("erro.")
             elif opcao == "3":
                 try:
-                    val = int(input("Digite o número inteiro para pesquisar: "))
-                    encontrado = arvore.pesquisar(val)
-                    print(f"resultado: {'encontrado' if encontrado else 'não encontrado'}")
-                except ValueError:
-                    print("Numero invalido")
-
+                    val = int(input("digite o número: "))
+                    print(f"encontrado: {arvore.pesquisar(val)}")
+                except ValueError: print("erro.")
             elif opcao == "4":
                 arvore.mostrar_arvore()
-
             elif opcao == "5":
-                print("Saindo...")
+                try:
+                    entrada = input("Digite números separados por vírgula: ")
+                    vals = [int(x.strip()) for x in entrada.split(',')]
+                    arvore.inserir_lista(vals)
+                except ValueError: print("erro no formato.")
+            elif opcao == "6":
                 break
-            
-            else:
-                print("Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     ArvoreRubroNegra.menu()
