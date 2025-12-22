@@ -191,6 +191,22 @@ class arvore_avl:
             return self.procurar_elemento_Node(node.filho_esq, chave)
         else:
             return self.procurar_elemento_Node(node.filho_dir, chave)
+        
+    def inserir_lista(self, array : list[int]):
+        """Função para inserir uma lista de n elementos.
+        Apesar de aumentar a complexidade do algoritmo, serve para facilitar na demonstração do código"""
+        for n in array:
+            self.inserir(n)
+            self.to_String()
+            print('')
+            
+    def remover_lista(self, array : list[int]):
+        """Função para remover uma lista de n elementos.
+        Apesar de aumentar a complexidade do algoritmo, serve para facilitar na demonstração do código"""
+        for n in array:
+            self.deletar(n)
+            self.to_String()
+            print('')
 
     def to_String(self, nivel : int = 0):
         "Função principal para printar a árvore binária"
@@ -216,15 +232,19 @@ class arvore_avl:
 
 avl = arvore_avl()
 
-avl.inserir(10)
-avl.inserir(20)
-avl.inserir(12)
-avl.inserir(15)
-avl.inserir(21)
-avl.inserir(23)
-print(avl.procurar_elemento(20))
-avl.to_String()
+# avl.inserir(10)
+# avl.inserir(20)
+# avl.inserir(12)
+# avl.inserir(15)
+# avl.inserir(21)
+# avl.inserir(23)
+# print(avl.procurar_elemento(20))
+# avl.to_String()
 
-avl.deletar(20)
-print(avl.procurar_elemento(20))
-avl.to_String()
+# avl.deletar(20)
+# print(avl.procurar_elemento(20))
+# avl.to_String()
+
+avl.inserir_lista([1, 2, 3, 4, 5, 6])
+
+avl.remover_lista([2, 5])
